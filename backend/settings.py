@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,21 +22,41 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--3g&z!gqf%c#1=mpd3&(+_i^90ej1gep(%8=u9xk(=r!#se5&9'
+PROD = os.environ.get('PROD',False)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get('PROD'):
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    DEBUG = False
+else:
+    SECRET_KEY = 'django-insecure--3g&z!gqf%c#1=mpd3&(+_i^90ej1gep(%8=u9xk(=r!#se5&9'
+    DEBUG = True
+
 SITE_ID = 1
 
-ALLOWED_HOSTS = []
-CORS_ALLOW_ALL_ORIGINS = False
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-# ]
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+ALLOWED_HOSTS = [
+    "reg26-api.alcheringa.co.in",
+    "localhost",
+    "127.0.0.1"
 ]
+
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "https://reg.alcheringa.co.in",
+    "https://registrations.alcheringa.co.in",
+]
+CORS_ALLOW_CREDENTIALS = True
+
+if PROD:
+    CSRF_TRUSTED_ORIGINS = [
+        "https://reg.alcheringa.co.in",
+        "https://registrations.alcheringa.co.in"
+    ]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000"
+    ]
+
 AUTH_USER_MODEL = 'users.NewUser'
 
 # Application definition
@@ -51,14 +72,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'dj_rest_auth',
- 'dj_rest_auth.registration',
-'django.contrib.sites',
-'allauth',
-'allauth.account',
-'allauth.socialaccount',
-'allauth.socialaccount.providers.google',
-'rest_framework.authtoken',
-'competitions',
+    'dj_rest_auth.registration',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'rest_framework.authtoken',
+    'competitions',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -111,12 +132,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if PROD:
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=False)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -149,9 +175,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
 CORS_ALLOW_CREDENTIALS = True
 
 # Static files (CSS, JavaScript, Images)
@@ -176,16 +199,26 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-# EMAIL_HOST_USER = os.environ.get('email')
-# EMAIL_HOST_PASSWORD = os.environ.get('password')
-EMAIL_HOST_USER = 'alcheringa2026@gmail.com'
-EMAIL_HOST_PASSWORD = 'xfiq nzoq aiyr eeyj'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # INSTALLED_APPS += ['corsheaders']
 # MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
 # CORS_ALLOW_ALL_ORIGINS = True  # or restrict to your React app origin in production
 
+if PROD:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://registrations.alcheringa.co.in',
+        'http://registrations.alcheringa.co.in',
+        'http://reg.alcheringa.co.in',
+        'https://reg.alcheringa.co.in'
+    ]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'http://127.0.0.1:8000',
+        'http://127.0.0.1:3000'
+    ]
 
 AUTH_USER_MODEL = 'users.NewUser'  # your custom user model
 #INSTALLED_APPS += ['corsheaders']
