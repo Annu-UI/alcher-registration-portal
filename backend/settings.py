@@ -48,14 +48,19 @@ CORS_ALLOW_CREDENTIALS = True
 
 if PROD:
     CSRF_TRUSTED_ORIGINS = [
+        "http://reg26-api.alcheringa.co.in",
         "https://reg26-api.alcheringa.co.in",
+        "http://reg.alcheringa.co.in",
         "https://reg.alcheringa.co.in",
+        "http://registrations.alcheringa.co.in"
         "https://registrations.alcheringa.co.in"
     ]
 else:
     CSRF_TRUSTED_ORIGINS = [
         "http://127.0.0.1:3000",
+        "http://127.0.0.1:8000",
         "http://localhost:3000"
+        "http://localhost:8000"
     ]
 
 AUTH_USER_MODEL = 'users.NewUser'
@@ -209,19 +214,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # INSTALLED_APPS += ['corsheaders']
 # MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware'] + MIDDLEWARE
 # CORS_ALLOW_ALL_ORIGINS = True  # or restrict to your React app origin in production
-
-if PROD:
-    CSRF_TRUSTED_ORIGINS = [
-        'https://registrations.alcheringa.co.in',
-        'http://registrations.alcheringa.co.in',
-        'http://reg.alcheringa.co.in',
-        'https://reg.alcheringa.co.in'
-    ]
-else:
-    CSRF_TRUSTED_ORIGINS = [
-        'http://127.0.0.1:8000',
-        'http://127.0.0.1:3000'
-    ]
 
 AUTH_USER_MODEL = 'users.NewUser'  # your custom user model
 #INSTALLED_APPS += ['corsheaders']
