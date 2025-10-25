@@ -5,4 +5,4 @@ python manage.py collectstatic --no-input --clear
 python manage.py makemigrations
 python manage.py migrate
 # python manage.py createsuperuser --noinput --firstname admin --email admin@admin.com
-gunicorn registrationportal.wsgi:application --bind 0.0.0.0:80 --log-level=debug --timeout 180  --workers 4
+gunicorn backend.wsgi:application --bind 0.0.0.0:80 --log-level=debug --timeout 180  --workers 4
