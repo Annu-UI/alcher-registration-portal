@@ -48,6 +48,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 if PROD:
     CSRF_TRUSTED_ORIGINS = [
+        "https://reg26-api.alcheringa.co.in",
         "https://reg.alcheringa.co.in",
         "https://registrations.alcheringa.co.in"
     ]
