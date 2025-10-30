@@ -43,6 +43,8 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "https://reg.alcheringa.co.in",
     "https://registrations.alcheringa.co.in",
+    "https://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -52,15 +54,17 @@ if PROD:
         "https://reg26-api.alcheringa.co.in",
         "http://reg.alcheringa.co.in",
         "https://reg.alcheringa.co.in",
-        "http://registrations.alcheringa.co.in"
-        "https://registrations.alcheringa.co.in"
+        "http://registrations.alcheringa.co.in",
+        "https://registrations.alcheringa.co.in",
+        "https://localhost:3000",
+        "http://127.0.0.1:3000",
     ]
 else:
     CSRF_TRUSTED_ORIGINS = [
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
-        "http://localhost:3000"
-        "http://localhost:8000"
+        "http://localhost:3000",
+        "http://localhost:8000",
     ]
 
 AUTH_USER_MODEL = 'users.NewUser'
