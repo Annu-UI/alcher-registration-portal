@@ -39,11 +39,11 @@ ALLOWED_HOSTS = [
     "127.0.0.1"
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [ 
     "https://reg.alcheringa.co.in",
     "https://registrations.alcheringa.co.in",
-    "https://localhost:3000",
+    "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 CORS_ALLOW_CREDENTIALS = True
@@ -56,7 +56,7 @@ if PROD:
         "https://reg.alcheringa.co.in",
         "http://registrations.alcheringa.co.in",
         "https://registrations.alcheringa.co.in",
-        "https://localhost:3000",
+        "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
 else:
