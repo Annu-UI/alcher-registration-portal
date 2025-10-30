@@ -39,7 +39,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1"
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "https://reg.alcheringa.co.in",
     "https://registrations.alcheringa.co.in",
