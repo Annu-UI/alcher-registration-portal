@@ -31,8 +31,6 @@ else:
     SECRET_KEY = 'django-insecure--3g&z!gqf%c#1=mpd3&(+_i^90ej1gep(%8=u9xk(=r!#se5&9'
     DEBUG = True
 
-SITE_ID = 1
-
 ALLOWED_HOSTS = [
     "reg26-api.alcheringa.co.in",
     "localhost",
@@ -69,8 +67,8 @@ else:
 
 AUTH_USER_MODEL = 'users.NewUser'
 
-# Application definition
-SITE_ID = 2
+SITE_ID = os.environ.get('SITE_ID')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
