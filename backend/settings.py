@@ -37,9 +37,6 @@ else:
     SECRET_KEY = 'django-insecure--3g&z!gqf%c#1=mpd3&(+_i^90ej1gep(%8=u9xk(=r!#se5&9'
     DEBUG = True
 
-SITE_ID = 3
-
-
 ALLOWED_HOSTS = [
     "reg26-api.alcheringa.co.in",
     "localhost",
@@ -76,7 +73,7 @@ else:
 
 AUTH_USER_MODEL = 'users.NewUser'
 
-# Application definition
+SITE_ID = os.environ.get('SITE_ID')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -213,6 +210,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
 }
 
  #Setup Email
