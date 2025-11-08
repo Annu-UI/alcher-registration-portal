@@ -308,12 +308,26 @@ class RegisterCompetitionView(APIView):
         existing_team = CompTeam.objects.filter(event=competition, leader=request.user).first()
         if existing_team:
             return Response({"error": "You have already registered for this competition."}, status=status.HTTP_400_BAD_REQUEST)
+        # --- START CHANGE ---
+        # 1. Retrieve team name directly from the logged-in user's profile
+        try:
+            # Access the 'team' related object defined in your User models.py
+            team_name = request.user.team.name
+            
+            # Fallback if the name is somehow blank in the database
+            if not team_name:
+                 team_name = f"{request.user.fullname}'s Team"
+                 
+        except Exception:
+            # Fallback safety if the user has no Team object yet
+            team_name = f"{request.user.fullname}'s Team"
+        # --- END CHANGE ---
 
         # Step 3: Prepare data for serializer
         serializer_data = {
             "event": str(competition.id),
             "leader": str(request.user.id),
-            "team_name": request.data.get('team_name', "Untitled Team"),
+            "team_name": team_name,  # <-- Using the retrieved name here,
             "team_members": request.data.get('team_members', []),  # ✅ fixed field name
         }
 
