@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+#from dotenv import load_dotenv #for local 
 
+#load_dotenv() #for local
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -73,7 +75,7 @@ else:
 
 AUTH_USER_MODEL = 'users.NewUser'
 
-SITE_ID = os.environ.get('SITE_ID')
+SITE_ID = int(os.environ.get('SITE_ID', 3))
 
 INSTALLED_APPS = [
     'django.contrib.admin',

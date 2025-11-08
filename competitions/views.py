@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Q
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, send_mail # Add EmailMultiAlternatives
+from django.utils.html import strip_tags # Add this import
+from django.template.loader import render_to_string # Optional, but good practice for complex emails
 from django.conf import settings
 from .models import Competition, Module, TeamMembers, CompTeam 
 from .serializers import (
@@ -14,8 +16,8 @@ from .serializers import (
 )
 def send_registration_email(user, competition, team_members_queryset):
     """
-    Sends a confirmation email to the user after successful
-    competition registration.
+    Sends a confirmation email (both HTML and plain text) to the user after 
+    successful competition registration.
     """
     leader = user
     competition_name = competition.event_name
@@ -23,40 +25,177 @@ def send_registration_email(user, competition, team_members_queryset):
     # Get the names of the team members
     member_names = [member.name for member in team_members_queryset]
     
-    # Construct the members string, including the team leader
+    # Construct the members string for plain text
     if member_names:
-        # List the leader first, then the other members
         all_members_str = f"- {leader.fullname} (Team Leader)\n"
         all_members_str += "\n".join([f"- {name}" for name in member_names])
     else:
-        # This handles if the leader registered solo
         all_members_str = f"- {leader.fullname} (Team Leader)"
 
-    subject = f"Successful Registration for {competition_name}"
-    message = f"""
-    Hello {leader.fullname},
+    # Construct the members HTML list
+    if member_names:
+        all_members_html = f"<li>{leader.fullname} (Team Leader)</li>"
+        all_members_html += "".join([f"<li>{name}</li>" for name in member_names])
+    else:
+        all_members_html = f"<li>{leader.fullname} (Team Leader)</li>"
 
-    You have successfully registered for the competition: {competition_name}.
+    subject = "Alcheringa Registration Confirmed: Get Ready for an Unforgettable Experience!"
+    from_email = settings.EMAIL_HOST_USER
+    to = [user.email]
 
-    Your registered team is:
-    {all_members_str}
+    # --- HTML Version ---
+    html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }}
+        .container {{
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }}
+        .header {{
+            background-color: #1a1a1a; /* Dark background for header */
+            color: #e67e22; /* Alcheringa orange accent */
+            padding: 20px;
+            text-align: center;
+        }}
+        .header h2 {{
+            margin: 0;
+            font-size: 24px;
+        }}
+        .content {{
+            padding: 30px;
+        }}
+        .warning-box {{
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }}
+        .team-list {{
+            background-color: #f9f9f9;
+            border-left: 4px solid #e67e22;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }}
+        .team-list ul {{
+            margin: 0;
+            padding-left: 20px;
+        }}
+        .team-list li {{
+            margin-bottom: 5px;
+        }}
+        .footer {{
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #eaeaea;
+        }}
+        .contact-info {{
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>ALCHERINGA 2026</h2>
+        </div>
+        <div class="content">
+            <p>Hello <strong>{leader.fullname}</strong>,</p>
 
-    We look forward to seeing you at the event!
+            <div class="warning-box">
+                THIS IS NOT THE FINAL CONFIRMATION MAIL FOR PARTICIPATION.<br>
+                YOU WILL RECEIVE FINAL CONFIRMATION AFTER VERIFICATION.
+            </div>
 
-    Best regards,
-    The Alcheringa Team
-    """
-    
+            <p>We're delighted to inform you that your registration for Alcheringa, IIT Guwahati's annual cultural fest, is <strong>confirmed</strong>!</p>
+            
+            <p>Your registration for the competition <strong style="color: #e67e22;">{competition_name}</strong> has been verified, and we're currently in the process of finalizing participant selections.</p>
+            
+            <p>Expect an email from the Alcheringa team soon, confirming your selection for active participation in the upcoming festivities.</p>
+            
+            <p>Exciting news is on the way! We can't wait for you to be a part of this incredible cultural celebration.</p>
+
+            <p>Your registered team is:</p>
+            <div class="team-list">
+                <ul>
+                    {all_members_html}
+                </ul>
+            </div>
+
+            <p>Warm regards,</p>
+            <p><strong>Team PR & Branding,<br>Alcheringa 2026</strong></p>
+        </div>
+        <div class="footer">
+            For further queries contact:
+            <div class="contact-info">
+                Khushi Gupta: +91 9864875424<br>
+                Shashank Daga: +91 8240950055
+            </div>
+            <p style="margin-top: 20px;">© 2025 Alcheringa, IIT Guwahati. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+    # --- Plain Text Version (Fallback) ---
+    text_content = f"""
+Hello {leader.fullname},
+
+*** THIS IS NOT THE FINAL CONFIRMATION MAIL FOR PARTICIPATION. YOU WILL RECEIVE FINAL CONFIRMATION AFTER VERIFICATION. ***
+
+We're delighted to inform you that your registration for Alcheringa, IIT Guwahati's annual cultural fest, is confirmed! 
+Your registration for the competition {competition_name} has been verified, and we're currently in the process of finalizing participant selections. 
+
+Expect an email from the Alcheringa team soon, confirming your selection for active participation in the upcoming festivities.
+Exciting news is on the way! We can't wait for you to be a part of this incredible cultural celebration.
+
+Your registered team is:
+{all_members_str}
+
+Warm regards,
+Team PR & Branding, 
+Alcheringa 2026
+
+For further queries contact:
+Khushi Gupta: +91 9864875424
+Shashank Daga: +91 8240950055
+"""
+
     try:
-        send_mail(
+        email = EmailMultiAlternatives(
             subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            [user.email],
-            fail_silently=False,
+            text_content,
+            from_email,
+            to
         )
+        email.attach_alternative(html_content, "text/html")
+        email.send()
     except Exception as e:
-        print(f"Error sending registration email to {user.email}: {e}") # Log this
+        print(f"Error sending registration email to {user.email}: {e}")
 # ------------------------------
 # FIXED Competition Detail View (GET only)
 # ------------------------------
