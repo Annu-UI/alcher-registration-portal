@@ -36,16 +36,28 @@ class RegisterCompSerializer(serializers.ModelSerializer):
     team_members = serializers.ListField(
         child=serializers.CharField(), write_only=True
     )
+    # 1. Add these fields so the API accepts them
+    team_video = serializers.URLField(write_only=True, required=False, allow_blank=True)
+    description = serializers.CharField(write_only=True, required=False, allow_blank=True)
 
     class Meta:
         model = CompTeam
-        fields = ['event', 'leader', 'team_name', 'team_members']
+        fields = ['event', 'leader', 'team_name', 'team_members', 'team_video', 'description']
 
     def create(self, validated_data):
         members_data = validated_data.pop('team_members')
+        video_link = validated_data.pop('team_video', None)
+        desc_text = validated_data.pop('description', None)
         comp_team = CompTeam.objects.create(**validated_data)
         for member_name in members_data:
             member = TeamMembers.objects.create(name=member_name)
             comp_team.members.add(member)
+
+        SubmitPerformance.objects.create(
+            event=comp_team.event,
+            team=comp_team,
+            link=video_link if video_link else "", # Saves "" if blank
+            description=desc_text if desc_text else ""
+        )
         return comp_team
 

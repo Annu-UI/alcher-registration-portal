@@ -2,7 +2,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from .views import ShowAllCompetitionsView, RegisterCompetitionView, CompetitionDetailView, CompetitionViewSet, MyRegisteredCompetitionsView
+from .views import ShowAllCompetitionsView, RegisterCompetitionView, CompetitionDetailView, CompetitionViewSet, MyRegisteredCompetitionsView, superuser_dashboard
 
 router = DefaultRouter()
 router.register(r'competitions', CompetitionViewSet, basename='competition')
@@ -22,6 +22,7 @@ urlpatterns = [
 
     # Include router URLs
     path('', include(router.urls)),
+    path('super-dashboard/', superuser_dashboard, name='super_dashboard'),
 ]
 
 

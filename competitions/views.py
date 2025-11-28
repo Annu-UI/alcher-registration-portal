@@ -329,6 +329,9 @@ class RegisterCompetitionView(APIView):
             "leader": str(request.user.id),
             "team_name": team_name,  # <-- Using the retrieved name here,
             "team_members": request.data.get('team_members', []),  # ✅ fixed field name
+            # ADD THESE TWO LINES:
+            'team_video': request.data.get('team_video'), 
+            'description': request.data.get('description')
         }
 
         # Step 4: Validate and save
@@ -356,5 +359,62 @@ class RegisterCompetitionView(APIView):
                 {"message": "Registration successful!", "data": serializer.data},
                 status=status.HTTP_201_CREATED
             )
+        
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+
+
+# This decorator ensures ONLY superusers can see this page
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin/login/')
+def superuser_dashboard(request):
+    # 1. Fetch all teams with optimized queries
+    # 'select_related' for ForeignKeys (event, leader)
+    # 'prefetch_related' for ManyToMany (members) and Reverse FK (compteams2)
+    teams_qs = CompTeam.objects.select_related('event', 'leader')\
+                               .prefetch_related('members', 'compteams2')\
+                               .all()
+
+    table_data = []
+    
+    for team in teams_qs:
+        # 2. Extract Leader Details
+        leader = team.leader
+        # We use getattr to safely get fields even if some users are missing data
+        l_city = getattr(leader, 'city', '-')
+        l_college = getattr(leader, 'collegename', '-')
+        l_alcher_id = getattr(leader, 'alcherid', '-')
+        l_name = getattr(leader, 'fullname', '-')
+        l_phone = getattr(leader, 'phone_number', '-')
+
+        # 3. Extract Submission Details
+        # Using 'compteams2' as defined in your SubmitPerformance model related_name
+        submission = team.compteams2.first()
+        
+        perf_link = submission.link if submission else ""
+        desc = submission.description if submission else "-"
+
+        # 4. Extract Participants
+        # Joins all names into a single string like "Alice, Bob, Charlie"
+        members_str = ", ".join([m.name for m in team.members.all()])
+
+        # 5. Build the row dictionary
+        row = {
+            'team_name': team.team_name,
+            'competition': team.event.event_name,
+            'city': l_city,
+            'college': l_college,
+            'alcher_id': l_alcher_id,
+            'leader_name': l_name,
+            'leader_phone': l_phone,
+            'participants': members_str,
+            'link': perf_link,
+            'description': desc,
+        }
+        table_data.append(row)
+
+    context = {'table_data': table_data}
+    return render(request, 'competitions/dashboard.html', context)
