@@ -371,9 +371,6 @@ from django.contrib.auth.decorators import user_passes_test
 # This decorator ensures ONLY superusers can see this page
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin/login/')
 def superuser_dashboard(request):
-    # 1. Fetch all teams with optimized queries
-    # 'select_related' for ForeignKeys (event, leader)
-    # 'prefetch_related' for ManyToMany (members) and Reverse FK (compteams2)
     teams_qs = CompTeam.objects.select_related('event', 'leader')\
                                .prefetch_related('members', 'compteams2')\
                                .all()
@@ -381,27 +378,33 @@ def superuser_dashboard(request):
     table_data = []
     
     for team in teams_qs:
-        # 2. Extract Leader Details
         leader = team.leader
-        # We use getattr to safely get fields even if some users are missing data
         l_city = getattr(leader, 'city', '-')
         l_college = getattr(leader, 'collegename', '-')
         l_alcher_id = getattr(leader, 'alcherid', '-')
         l_name = getattr(leader, 'fullname', '-')
         l_phone = getattr(leader, 'phone_number', '-')
 
-        # 3. Extract Submission Details
-        # Using 'compteams2' as defined in your SubmitPerformance model related_name
         submission = team.compteams2.first()
-        
         perf_link = submission.link if submission else ""
         desc = submission.description if submission else "-"
 
-        # 4. Extract Participants
-        # Joins all names into a single string like "Alice, Bob, Charlie"
-        members_str = ", ".join([m.name for m in team.members.all()])
+        # --- UPDATED SECTION: DETAILED MEMBERS LIST ---
+        members_list = []
+        for m in team.members.all():
+            # Handle empty values gracefully
+            m_phone = m.phone if m.phone else "N/A"
+            m_email = m.email if m.email else "N/A"
+            
+            # Format: ID - Name - Phone - Email
+            # Using ' || ' as a separator so it doesn't break CSV commas
+            details = f"[ID: {m.id} | Name: {m.name} | Phone: {m_phone} | Email: {m_email}]"
+            members_list.append(details)
+        
+        # Join all members into one long string separated by " || "
+        members_str = " || ".join(members_list)
+        # -----------------------------------------------
 
-        # 5. Build the row dictionary
         row = {
             'team_name': team.team_name,
             'competition': team.event.event_name,
@@ -410,7 +413,7 @@ def superuser_dashboard(request):
             'alcher_id': l_alcher_id,
             'leader_name': l_name,
             'leader_phone': l_phone,
-            'participants': members_str,
+            'participants': members_str, # <-- Now contains full details
             'link': perf_link,
             'description': desc,
         }
