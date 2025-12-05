@@ -396,9 +396,9 @@ def superuser_dashboard(request):
             m_phone = m.phone if m.phone else "N/A"
             m_email = m.email if m.email else "N/A"
             
-            # Format: ID - Name - Phone - Email
+            # Format:Name - Phone - Email
             # Using ' || ' as a separator so it doesn't break CSV commas
-            details = f"[ID: {m.id} | Name: {m.name} | Phone: {m_phone} | Email: {m_email}]"
+            details = f"[Name: {m.name} | Phone: {m_phone} | Email: {m_email}]"
             members_list.append(details)
         
         # Join all members into one long string separated by " || "
