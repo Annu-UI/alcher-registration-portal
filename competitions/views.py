@@ -384,6 +384,9 @@ def superuser_dashboard(request):
         l_alcher_id = getattr(leader, 'alcherid', '-')
         l_name = getattr(leader, 'fullname', '-')
         l_phone = getattr(leader, 'phone_number', '-')
+        l_email = getattr(leader, 'email', 'N/A')
+
+        l_contact = f"{l_phone} | {l_email}"
 
         submission = team.compteams2.first()
         perf_link = submission.link if submission else ""
@@ -412,7 +415,7 @@ def superuser_dashboard(request):
             'college': l_college,
             'alcher_id': l_alcher_id,
             'leader_name': l_name,
-            'leader_phone': l_phone,
+            'leader_contact': l_contact,
             'participants': members_str, # <-- Now contains full details
             'link': perf_link,
             'description': desc,
