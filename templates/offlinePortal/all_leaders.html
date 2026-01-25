@@ -1,0 +1,37 @@
+{% extends 'offlinePortal/home.html' %}
+
+{% block title %}All Leaders{% endblock %}
+
+{% block header %}
+All Leaders
+{% endblock %}
+
+{% block content %}
+<h2>All Team Leaders</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>#</th>
+        <th>Leader Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>City</th>
+        <th>Team Name</th>
+    </tr>
+
+    {% for team in teams %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ team.leader.fullname }}</td>
+        <td>{{ team.leader.email }}</td>
+        <td>{{ team.leader.phone_number }}</td>
+        <td>{{ team.leader.city }}</td>
+        <td>{{ team.name }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="6">No leaders found</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'offlinePortal/home.html' %}
+
+{% block title %}All Users{% endblock %}
+
+{% block header %}
+All Users
+{% endblock %}
+
+{% block content %}
+<h2>All Registered Users</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>#</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>City</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.fullname }}</td>
+        <td>{{ user.phone_number }}</td>
+        <td>{{ user.city }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No users found</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

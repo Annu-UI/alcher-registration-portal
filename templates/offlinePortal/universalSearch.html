@@ -1,0 +1,102 @@
+{% extends 'offlinePortal/home.html' %}
+{% block title %}Universal Search{% endblock %}
+
+{% block styles %}
+<style>
+.header_ div {border-bottom:1px solid #1a3461;padding:.8vw 1.6vw;width:25vw}
+.container-div{border:1px solid #957676;border-radius:.5vw;width:fit-content;font-size:1.15vw}
+#input_box{height:2.5vw;width:15vw;border:1px solid #1d345c;font-size:1.1vw;padding-left:1vw;border-radius:.4vw}
+#searchBtn{height:2.9vw;padding:0 1.2vw;border:1px solid #c3c3c3;background:#1d345c;color:#fff;border-radius:.4vw}
+</style>
+{% endblock styles %}
+
+{% block header %}Universal Search{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="alcherID" id="input_box" placeholder="Alcher / Member ID">
+    <button id="searchBtn" type="submit">Search</button>
+</form>
+
+<div style="color:red;">
+    {% for message in messages %}
+        * {{message}}
+    {% endfor %}
+</div>
+
+{% if leader %}
+<div style="margin-top:3vw;">
+    <strong>AlcherID: {{ leader.alcherid }}</strong>
+
+    <div style="display:flex;gap:2vw;margin-top:1vw;">
+        <div class="container-div">
+            <div class="header_">
+                <div><strong>Name</strong> - {{ leader.fullname }}</div>
+                <div><strong>Email</strong> - {{ leader.email }}</div>
+                <div><strong>Phone</strong> - {{ leader.phone_number }}</div>
+                <div><strong>College</strong> - {{ leader.collegename }}</div>
+                <div><strong>City</strong> - {{ leader.city }}</div>
+                <div>
+                    <strong>Team Members</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-div">
+            <div class="header_">
+                <div><strong>Alternate Phone</strong> - {{ leader.alternate_phone }}</div>
+                <div><strong>Email Verified</strong> -
+                    {% if leader.is_active %} Yes {% else %} No {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% elif member and team %}
+<div style="margin-top:3vw;">
+    <strong>Leader: {{ team.leader.fullname }}
+        (<a href="#" onclick="linktoteam()" style="text-decoration:underline;">
+            {{ team.leader.alcherid }}
+        </a>)
+    </strong>
+
+    <div style="display:flex;gap:2vw;margin-top:1vw;">
+        <div class="container-div">
+            <div class="header_">
+                <div><strong>MemberID</strong> - {{ member.memberid }}</div>
+                <div><strong>Name</strong> - {{ member.name }}</div>
+                <div><strong>Email</strong> - {{ member.email }}</div>
+                <div><strong>Phone</strong> - {{ member.phone }}</div>
+                <div><strong>College</strong> - {{ team.leader.collegename }}</div>
+                <div><strong>City</strong> - {{ team.leader.city }}</div>
+                <div>
+                    <strong>Team</strong> -
+                    <a href="{% url 'team_members' leader_id=team.leader.id %}" target="_blank">View Members</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-div">
+            <div class="header_">
+                <div><strong>Alternate Phone</strong> - {{ team.leader.alternate_phone }}</div>
+                <div><strong>Email Verified</strong> -
+                    {% if team.leader.is_active %} Yes {% else %} No {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function linktoteam(){
+    const input = document.getElementById("input_box");
+    input.value = "{{ team.leader.alcherid|default:'' }}";
+    document.getElementById("searchBtn").click();
+}
+</script>
+
+{% endblock %}
