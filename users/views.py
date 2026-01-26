@@ -31,6 +31,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from .models import  TeamMembers
 from .serializers import ParticipantSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import api_view
 
 def clean_old_unverified_users():
     cutoff = timezone.now() - timedelta(minutes=5)
@@ -178,9 +179,18 @@ class ResetPasswordConfirmView(generics.GenericAPIView):
         except NewUser.DoesNotExist:
             return Response({"detail": "Invalid password reset token."}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
+
+    def get(self, request):
+        return Response({
+            "detail": "Send POST request with email and password",
+            "format": {
+                "email": "user@example.com",
+                "password": "yourpassword"
+            }
+        })
+    
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -292,7 +302,7 @@ from django.http import HttpResponse
 def homepage(request):
     return HttpResponse("Welcome to the homepage!")
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def google_login(request):
     token = request.data.get('token')
     if not token:
@@ -346,7 +356,6 @@ def google_login(request):
         return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
 @login_required
 def competition_list(request):
     return Response({"message": "List of competitions"})
