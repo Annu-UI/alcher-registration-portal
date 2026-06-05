@@ -1,0 +1,362 @@
+.competitions{
+    border:5px solid rgb(50, 22, 22);
+    padding :10px;
+    margin:20px;
+    color:rgb(57, 39, 4);
+    width:260px;
+    height:260px;
+    background-color: rgb(226, 195, 136);
+}
+.modules-list {
+    list-style-type: none;
+    padding: 0;
+}
+.modules-list li {
+    display: flex;
+    flex-direction:  column;
+    cursor: pointer;
+    width:300px;
+    height:100px;
+    margin-left:100px;
+    padding: 8px 12px;
+    margin-top: 10px;;
+    border-bottom: 1px solid #eee;
+    border:1px solid black;
+    color:brown;
+    font-size: large;
+    font-weight:800;
+    text-align: center;
+}
+.modules-list li:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.competitions-grid {
+  display: flex;              /* horizontal layout */
+  flex-direction: row;        /* items in a row */
+  flex-wrap: wrap;        /* wrap to next line if needed */
+  gap: 1.5rem;               /* space between cards */
+  padding: 1rem 0;
+  overflow-y: auto;           /* scroll vertically if needed */
+  /*no-overscroll in y-direction*/
+  overscroll-behavior-y: contain;
+  height: calc(100vh - 200px); /* adjust height based on page content */
+}
+
+.competition-card {
+  position: relative;
+  margin: 10px;           /* fixed height */
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease;
+}
+
+.competition-card:hover {
+  transform: scale(1.01);    /* slight zoom on hover */
+}
+
+/* Info initially hidden */
+.competition-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.6); /* semi-transparent overlay */
+  padding: 1rem;
+  box-sizing: border-box;
+  opacity: 0;               /* hidden by default */
+  transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+ 
+}
+
+/* Show info on hover */
+.competition-card:hover .competition-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text styling */
+.comp-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.comp-rules {
+  font-size: 0.9rem;
+}
+.competition-default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  transition: transform 0.3s ease, color 0.3s ease; /* animate transform */
+}
+.dec-btn{
+  margin-top: auto; /* allows it to stick to bottom */
+  transition: transform 0.5s ease !important;
+}
+.dec-btn:hover{
+  background-color: #eab308 !important; /* slightly darker yellow on hover */
+  transform: scale(1.05); /* slight grow on hover */
+}
+/* On hover, move text up */
+
+/* If you want the heading specifically */
+.competition-default h3 {
+  transition: transform 0.3s ease;
+}
+.competition-default .dec-btn{
+  margin-top: auto; /* allows it to stick to bottom */
+  transition: transform 0.5s ease;
+}
+
+.competition-card:hover .competition-default h3 {
+  transform: translateY(-20px);
+}
+.competition-card:hover .competition-default .dec-btn{
+  transform: translateY(20px) !important; /* move button down smoothly */
+}
+/* Make prize initially hidden */
+.prize {
+  opacity: 0;                 /* hidden */
+    
+  position: relative;
+  height: 40px;
+  top:20px;
+  padding: 10px;  
+  transform: translateY(20px); /* optional slide-in */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* smooth transition */
+}
+
+/* Show prize on hover of card */
+.competition-card:hover .prize {
+  opacity: 1;                 /* visible */
+  transform: translateY(0);   /* slide to original position */
+}
+
+.view-btn {
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  background-color: #fcd34d;
+  border: none;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+:root{
+    --card-w: 416px;
+    --card-h: 281px;
+    --s: 10px; /* step size for each L (change to px or % as desired) */
+    --searchh-input-w:300px;
+    --searchh-input-h:40px;
+    --k:6px;
+    --btnn-w:100px;
+    --btnn-h:40px;
+  }
+
+  
+
+  .card {
+    width: var(--card-w);
+    height: var(--card-h);
+    padding: 1rem;
+    box-sizing: border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#222;
+    font-weight:600;
+    background: linear-gradient(135deg,#ffb199,#ffecd2);
+    /* smooth edges for clip-path */
+    -webkit-clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+  }
+  .btnn {
+    width: var(--btnn-w);
+    height: var(--btnn-h);
+    padding: 1rem;
+    box-sizing: border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#222;
+    font-weight:600;
+    background: linear-gradient(135deg,#ffb199,#ffecd2);
+    /* smooth edges for clip-path */
+    -webkit-clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+  }
+
+  .searchh-input {
+    width: var(--searchh-input-w);
+    height: var(--searchh-input-h);
+    padding: 1rem;
+    box-sizing: border-box;
+    color:#222;
+    text-align: center;
+    -webkit-clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+  }
+
+  input::placeholder {
+  color: black;
+  opacity: 1; /* ensure full visibility in some browsers */
+}
+
+
+  /* ---------------------------------------------------
+     Apply ALL four notches simultaneously
+     This shape is longer and carefully orders points around the rect.
+     --------------------------------------------------- */
+  .double-notch-all {
+    clip-path: polygon(
+      /* start top-left area below its 2-step */
+      0 calc(2 * var(--s)),
+      /* top-left inner steps */
+      calc(1 * var(--s)) calc(2 * var(--s)),
+      calc(1 * var(--s)) calc(1 * var(--s)),
+      calc(2 * var(--s)) calc(1 * var(--s)),
+      calc(2 * var(--s)) 0,
+      /* top edge up to top-right reduced by 2*--s */
+      calc(100% - 2 * var(--s)) 0,
+      /* top-right inner steps */
+      calc(100% - 2 * var(--s)) calc(1 * var(--s)),
+      calc(100% - 1 * var(--s)) calc(1 * var(--s)),
+      calc(100% - 1 * var(--s)) calc(2 * var(--s)),
+      100% calc(2 * var(--s)),
+      /* right edge down to bottom-right area */
+      100% calc(100% - 2 * var(--s)),
+      /* bottom-right inner steps */
+      calc(100% - 1 * var(--s)) calc(100% - 2 * var(--s)),
+      calc(100% - 1 * var(--s)) calc(100% - 1 * var(--s)),
+      calc(100% - 2 * var(--s)) calc(100% - 1 * var(--s)),
+      calc(100% - 2 * var(--s)) 100%,
+      /* bottom edge leftwards to bottom-left area */
+      calc(2 * var(--s)) 100%,
+      /* bottom-left inner steps */
+      calc(2 * var(--s)) calc(100% - var(--s)),
+      calc(1 * var(--s)) calc(100% - var(--s)),
+      calc(1 * var(--s)) calc(100% - 2 * var(--s)),
+      0 calc(100% - 2 * var(--s))
+    );
+  }
+
+.double-notch-all2 {
+    -webkit-clip-path: polygon(
+      /* top-left */
+      0 calc(var(--k)),
+      calc(var(--k)) calc(var(--k)),
+      calc(var(--k)) 0,
+      /* top edge to top-right notch */
+      calc(100% - var(--k)) 0,
+      calc(100% - var(--k)) calc(var(--k)),
+      100% calc(var(--k)),
+      /* right edge to bottom-right notch */
+      100% calc(100% - var(--k)),
+      calc(100% - var(--k)) calc(100% - var(--k)),
+      calc(100% - var(--k)) 100%,
+      /* bottom edge to bottom-left notch */
+      calc(var(--k)) 100%,
+      calc(var(--k)) calc(100% - var(--k)),
+      0 calc(100% - var(--k))
+    );
+    clip-path: polygon(
+      /* top-left */
+      0 calc(var(--k)),
+      calc(var(--k)) calc(var(--k)),
+      calc(var(--k)) 0,
+      /* top edge to top-right notch */
+      calc(100% - var(--k)) 0,
+      calc(100% - var(--k)) calc(var(--k)),
+      100% calc(var(--k)),
+      /* right edge to bottom-right notch */
+      100% calc(100% - var(--k)),
+      calc(100% - var(--k)) calc(100% - var(--k)),
+      calc(100% - var(--k)) 100%,
+      /* bottom edge to bottom-left notch */
+      calc(var(--k)) 100%,
+      calc(var(--k)) calc(100% - var(--k)),
+      0 calc(100% - var(--k))
+    );
+  }
+
+   
+
+ /* make sure parent is positioned (you already have this) */
+.competition-card {
+  position: relative; /* already present in your CSS */
+  overflow: hidden;
+  
+}
+
+/* make the default container keep spacing for the button */
+.competition-default {
+  height: 100%;
+  padding: 1rem;           /* keep inner spacing */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* style the h3 for absolute-centering initially */
+.competition-default h3 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* center */
+  margin: 0;
+  transition: top 0.35s ease, transform 0.35s ease;
+  z-index: 3;
+  pointer-events: none; /* so hover on card still works */
+}
+
+/* when hovering the card, move the h3 to the top and center horizontally */
+.competition-card:hover .competition-default h3 {
+  top: 1rem;                      /* distance from top when "stuck" */
+  transform: translateX(-50%);    /* keep horizontally centered */
+}
+
+/* make sure button stays at bottom and is visible above overlay */
+.dec-btn {
+  margin-top: auto;
+  z-index: 2;
+  position: relative;
+}
+
+
+ 

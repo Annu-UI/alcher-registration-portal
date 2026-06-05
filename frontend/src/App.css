@@ -1,0 +1,178 @@
+/* App.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+h1, h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 10px 15px;
+  margin: 0.6rem 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+p {
+  margin-top: 1rem;
+  color: #ef4444; /* red-ish for errors */
+  font-weight: 600;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #6b7280; /* gray */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+
+/* Container for the form */
+.container {
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Headings */
+h2 {
+  color: #1f2937; /* Dark slate */
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Form inputs (text, email, password, select, textarea) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 0.6rem 0 1.4rem 0;
+  border: 1.8px solid #cbd5e1; /* light slate */
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* Focus state for inputs */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #3b82f6; /* bright blue */
+  outline: none;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+/* Textarea specifics */
+textarea {
+  min-height: 80px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* Label styling (if you add labels) */
+/* Example:
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #374151;
+}
+*/
+
+/* Submit button styles */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px 18px;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 8px;
+}
+
+button[type="submit"]:hover {
+  background-color: #2563eb;
+}
+
+/* Message paragraph */
+p {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #ef4444; /* Red-ish for errors and alerts */
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .container {
+    margin: 1rem 1rem;
+    padding: 1.5rem 1.5rem;
+  }
+}

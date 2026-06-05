@@ -1,0 +1,57 @@
+  
+  :root{
+    --card-w: 306px;
+    --card-h: 512px;
+    --s: 10px; /* step size for each L (change to px or % as desired) */
+  }
+
+  
+  .card {
+    /* width: var(--card-w);
+    height: var(--card-h); */
+    padding: 1rem;
+    box-sizing: border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#222;
+    font-weight:600;
+    background: linear-gradient(135deg,#ffb199,#ffecd2);
+    /* smooth edges for clip-path */
+    -webkit-clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+  }
+  
+  .double-notch-all {
+    clip-path: polygon(
+      /* start top-left area below its 2-step */
+      0 calc(2 * var(--s)),
+      /* top-left inner steps */
+      calc(1 * var(--s)) calc(2 * var(--s)),
+      calc(1 * var(--s)) calc(1 * var(--s)),
+      calc(2 * var(--s)) calc(1 * var(--s)),
+      calc(2 * var(--s)) 0,
+      /* top edge up to top-right reduced by 2*--s */
+      calc(100% - 2 * var(--s)) 0,
+      /* top-right inner steps */
+      calc(100% - 2 * var(--s)) calc(1 * var(--s)),
+      calc(100% - 1 * var(--s)) calc(1 * var(--s)),
+      calc(100% - 1 * var(--s)) calc(2 * var(--s)),
+      100% calc(2 * var(--s)),
+      /* right edge down to bottom-right area */
+      100% calc(100% - 2 * var(--s)),
+      /* bottom-right inner steps */
+      calc(100% - 1 * var(--s)) calc(100% - 2 * var(--s)),
+      calc(100% - 1 * var(--s)) calc(100% - 1 * var(--s)),
+      calc(100% - 2 * var(--s)) calc(100% - 1 * var(--s)),
+      calc(100% - 2 * var(--s)) 100%,
+      /* bottom edge leftwards to bottom-left area */
+      calc(2 * var(--s)) 100%,
+      /* bottom-left inner steps */
+      calc(2 * var(--s)) calc(100% - var(--s)),
+      calc(1 * var(--s)) calc(100% - var(--s)),
+      calc(1 * var(--s)) calc(100% - 2 * var(--s)),
+      0 calc(100% - 2 * var(--s))
+    );
+  }

@@ -1,0 +1,139 @@
+.fotterbg {
+  background-image: url("../assets/blackbg.svg");/* PC background */
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: 0 -190px;
+}
+
+/* 🌐 For mobile screens (< sm in Tailwind = max-width: 639px) */
+@media (max-width: 639px) {
+  .fotterbg {
+    background-image: url("../assets/blackbgmobile.svg"); /* mobile background */
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+    background-position: 0 -190px;
+  }
+}
+
+.pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(36, 20px);
+  grid-template-rows: repeat(17, 20px);
+  width: calc(36 * 20px);
+  height: calc(17 * 20px);
+}
+
+@media (max-width: 640px) {
+  .pixel-grid {
+    grid-template-columns: repeat(36, 6.68px);
+    grid-template-rows: repeat(17, 6.68px);
+    width: calc(36 * 6.68px);
+    height: calc(17 * 6.68px);
+  }
+}
+
+.pixelbg{
+  background-image: url("../assets/blackbg.svg");
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+/* 🌐 For mobile screens (< sm in Tailwind = max-width: 639px) */
+@media (max-width: 639px) {
+  .pixelbg{
+    background-image: url("../assets/blackbgmobile.svg"); /* mobile background */
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+    background-position: center;
+  }
+}
+
+.landingbg{
+  background-image: url("../assets/brightbg.svg"); /* PC background */
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+/* 🌐 For mobile screens (< sm in Tailwind = max-width: 639px) */
+@media (max-width: 639px) {
+  .landingbg{
+    background-image: url("../assets/mbbgpatternwh.svg"); /* mobile background */
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+    background-position: center;
+  }
+}
+
+.input-bg {
+  background-image: url('../assets/inputbg.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 575px; /* base width */
+}
+
+.input-bg:focus {
+  background-image: url('../assets/inputbgfocus.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 575px;
+}
+
+.mbinput-bg {
+  background-image: url('../assets/mbaddforminpbg.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.mbinput-bg:focus {
+  background-image: url('../assets/mbaddforminpbgfocus.svg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.header-visible {
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Moves the container left by exactly one image-width */
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    /* Starts at the 'end' position */
+    transform: translateX(-50%);
+  }
+  100% {
+    /* Animates back to the 'start' position */
+    transform: translateX(0);
+  }
+}
+
+/* These are the classes you'll use in your React code */
+.animate-scroll-left {
+  animation: scroll-left 20s linear infinite;
+}
+
+.animate-scroll-right {
+  animation: scroll-right 20s linear infinite;
+}
+

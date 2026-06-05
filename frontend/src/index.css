@@ -1,0 +1,148 @@
+/* src/index.css */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Syne:wght@400;700;800&display=swap'); */
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('./fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200; /* ExtraLight weight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 200; /* ExtraLight weight */
+  font-style: normal;
+}
+
+/* --- Define each weight for the TT Modernoir static font --- */
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 500; /* Medium */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 600; /* DemiBold */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./fonts/TT_Modernoir_Trial_Light.ttf') format('truetype');
+  font-weight: 700;/* Bold */
+}
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-alch-cream;
+}
+
+/* --- Define the Manrope variable font --- */
+@font-face {
+  font-family: 'Manrope';
+  src: url('./assets/fonts/Manrope-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 200 800; /* Defines the entire weight range */
+  font-style: normal;
+}
+
+/* --- Define each weight for the TT Modernoir static font --- */
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_Medium.ttf') format('truetype');
+  font-weight: 500; /* Medium */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_DemiBold.ttf') format('truetype');
+  font-weight: 600; /* DemiBold */
+}
+@font-face {
+  font-family: 'TT Modernoir';
+  src: url('./assets/fonts/TT_Modernoir_Trial_Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+}
+
+/* added to remove scrol bar in add mem form !! */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+/* ---------- Flower rotation helpers ---------- 
+@layer utilities {
+  .flower-rotating {
+    @apply animate-flower-spin;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .flower-rotating-slow {
+    @apply animate-flower-spin-slow;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .flower-breathe {
+    @apply animate-flower-breathe;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  img[src*="star-filled.svg"],
+  img[src*="star-empty.svg"],
+  img[src*="flower.svg"],
+  img[src*="star-filled"],
+  img[src*="heading-icon-red"],
+  img[src*="star-empty"] {
+    @apply animate-flower-spin;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .no-spin {
+    animation: none !important;
+  }
+}
+  */
+/* Hide scrollbar but still allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #f5f3e6 inset !important;
+  box-shadow: 0 0 0px 1000px #f5f3e6 inset !important;
+  -webkit-text-fill-color: #000 !important;
+  transition: background-color 9999s ease-in-out 0s;
+} */
+
+
