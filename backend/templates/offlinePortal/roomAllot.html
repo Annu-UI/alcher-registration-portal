@@ -1,0 +1,140 @@
+{% extends 'offlinePortal/home.html' %}
+{% block title %}Room Allotment{% endblock %}
+
+{% block styles %}
+<style>
+/* (styles unchanged – shortened for clarity) */
+#input_box{height:2.5vw;width:15vw;border:1px solid #1d345c;font-size:1.1vw;padding:.8vw;border-radius:.4vw}
+#searchBtn{height:2.9vw;padding:0 1.2vw;border:1px solid #c3c3c3;background:#1d345c;color:#fff;border-radius:.4vw}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #957676;padding:1vw;text-align:center}
+th{background:#1d345c;color:#fff}
+.abc{display:flex;justify-content:space-between}
+.gen,.cal{background:#1d345c;color:#fff;padding:.6vw 1vw;border-radius:.4vw}
+</style>
+{% endblock %}
+
+{% block header %}Room Allotment{% endblock %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="alcherID" id="input_box" placeholder="Alcher / Member ID">
+    <button id="searchBtn" type="submit">Search</button>
+    <div style="color:red;">
+        {% for message in messages %}* {{message}}{% endfor %}
+    </div>
+    <input type="hidden" name="accomodation" value="0">
+</form>
+
+{% if team %}
+
+<form method="post">
+{% csrf_token %}
+<input type="hidden" name="accomodation" value="1">
+<input type="hidden" name="teamId" value="{{ team.id }}">
+
+<table>
+<tr>
+<th>#</th><th>Member ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Gender</th>
+<th>Accommodation</th><th>Type</th><th>Days</th><th>Leave</th><th>Discount</th>
+</tr>
+
+{% for member in team_members %}
+<tr>
+<td>{{ forloop.counter }}</td>
+<td>{{ member.memberid }}</td>
+<td>{{ member.name }}</td>
+<td>{{ member.phone }}</td>
+<td>{{ member.email }}</td>
+<td id="genderCell_{{forloop.counter}}">{{ member.gender }}</td>
+
+<td>
+<select name="{{member.memberid}}_acc" class="accommodation-dropdown" onchange="handleAccommodationChange(this)">
+    <option value="0" {% if not member.accommodation %}selected{% endif %}>No</option>
+    <option value="1" {% if member.accommodation %}selected{% endif %}>Yes</option>
+</select>
+</td>
+
+<td>
+<select name="{{member.memberid}}_type" class="acctype">
+    <option value="type1" {% if member.accommodation_type == 'type1' %}selected{% endif %}>Common</option>
+    <option value="type2" {% if member.accommodation_type == 'type2' %}selected{% endif %}>Triple</option>
+</select>
+</td>
+
+<td>
+<input type="number" class="daysStay" name="{{member.memberid}}_days" value="{{member.days_stay}}" min="0">
+</td>
+
+<td>
+<input type="date" class="leaveDate" name="{{member.memberid}}_leave">
+</td>
+
+<td>
+<input type="number" class="coupon" name="{{member.memberid}}_coupon" value="0">
+</td>
+</tr>
+{% endfor %}
+</table>
+
+<br>
+
+<div class="abc">
+<div>Blankets</div>
+<div><input type="number" name="blankets" id="Blankets" value="0"></div>
+</div>
+
+<div class="abc">
+<div>Accommodation Price</div>
+<div><input type="number" name="AccomodationPrice" id="AccomodationPrice" readonly></div>
+</div>
+
+<div class="abc">
+<div>Total</div>
+<div><input type="number" name="total" id="total"></div>
+</div>
+
+<br>
+
+<div class="cal" onclick="Calculate()">Calculate</div>
+
+
+</form>
+
+{% endif %}
+
+<script>
+function Calculate(){
+    let days=document.querySelectorAll('.daysStay');
+    let types=document.querySelectorAll('.acctype');
+    let coupons=document.querySelectorAll('.coupon');
+
+    let price=0;
+    for(let i=0;i<days.length;i++){
+        let d=parseInt(days[i].value||0);
+        if(types[i].value=="type1") price+=d*300;
+        if(types[i].value=="type2") price+=d*400;
+    }
+
+    document.getElementById("AccomodationPrice").value=price;
+
+    let blankets=parseInt(document.getElementById("Blankets").value||0)*100;
+
+    let discount=0;
+    coupons.forEach(c=>discount+=parseInt(c.value||0));
+
+    document.getElementById("total").value=price+blankets-discount;
+}
+
+function handleAccommodationChange(sel){
+    let row=sel.closest("tr");
+    row.querySelector(".acctype").disabled=(sel.value=="0");
+    row.querySelector(".daysStay").disabled=(sel.value=="0");
+    row.querySelector(".leaveDate").disabled=(sel.value=="0");
+    row.querySelector(".coupon").disabled=(sel.value=="0");
+}
+</script>
+
+{% endblock %}
